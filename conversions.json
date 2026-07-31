@@ -1,0 +1,35 @@
+{
+  "categories": [
+    {
+      "name": "Carb Staples (Calories)",
+      "metric": "calories",
+      "unit": "kcal per lb (raw, as purchased)",
+      "items": [
+        { "id": "brown_rice", "label": "Brown rice (raw, dry)", "value_per_lb": 1678 },
+        { "id": "russet_potato", "label": "Russet potato (raw, flesh + skin)", "value_per_lb": 358 }
+      ]
+    },
+    {
+      "name": "Chicken Cuts (Protein)",
+      "metric": "protein",
+      "unit": "grams protein per lb (raw, as purchased)",
+      "items": [
+        { "id": "chicken_breast_boneless_skinless", "label": "Boneless, skinless chicken breast", "value_per_lb": 102.1 },
+        { "id": "chicken_breast_bone_in_skin_on", "label": "Chicken breast, bone-in, skin-on", "value_per_lb": 72.6 },
+        { "id": "chicken_thighs_bone_in_skin_on", "label": "Chicken thighs, bone-in, skin-on", "value_per_lb": 71.7 },
+        { "id": "chicken_legs_bone_in_skin_on", "label": "Chicken legs, bone-in, skin-on", "value_per_lb": 65.2 },
+        { "id": "whole_rotisserie_chicken_raw", "label": "Whole chicken, raw, with giblets", "value_per_lb": 57.2 },
+        { "id": "chicken_leg_quarters_bone_in_skin_on", "label": "Chicken leg quarters, bone-in, skin-on", "value_per_lb": 55.5 }
+      ]
+    }
+  ],
+  "formula": {
+    "description": "Given item A priced at price_A per lb, the equivalent price for item B (same value per dollar) is: price_B = price_A * (value_per_lb_B / value_per_lb_A)",
+    "variables": {
+      "price_A": "known price per lb of the anchor item",
+      "value_per_lb_A": "metric value per lb of the anchor item (calories or protein grams)",
+      "value_per_lb_B": "metric value per lb of the comparison item",
+      "price_B": "the price per lb at which item B delivers equal value-per-dollar as item A"
+    }
+  }
+}
