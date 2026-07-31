@@ -248,6 +248,7 @@
 <script>
 (function () {
   var state = { data: null, categoryIndex: 0, itemId: null, price: null, actuals: {} };
+  var DEFAULT_CATEGORY_NAME = "Chicken Cuts (Protein)";
 
   var categorySelect = document.getElementById("category-select");
   var itemSelect = document.getElementById("item-select");
@@ -260,7 +261,10 @@
     .then(function (r) { return r.json(); })
     .then(function (data) {
       state.data = data;
+      var defaultIndex = data.categories.findIndex(function (c) { return c.name === DEFAULT_CATEGORY_NAME; });
+      state.categoryIndex = defaultIndex >= 0 ? defaultIndex : 0;
       populateCategories();
+      categorySelect.value = state.categoryIndex;
       populateItems();
       render();
     })

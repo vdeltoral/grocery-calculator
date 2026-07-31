@@ -10,4 +10,11 @@ Add or edit categories/items in `conversions.json`. Each category has a `metric`
 
 ## Deploy
 
-Deployed to Cloudflare Pages via `wrangler pages deploy .`.
+Live at https://grocery-calculator-vincent.pages.dev/. Deploy updates with:
+
+```
+source ~/.cloudflare/deltoral.env
+npx wrangler pages deploy . --project-name=grocery-calculator-vincent
+```
+
+(Project is named `grocery-calculator-vincent` because the plain `grocery-calculator.pages.dev` subdomain is already taken by another Cloudflare account globally.)
