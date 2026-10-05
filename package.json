@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Grocery deal calculator",
   "scripts": {
-    "build": "node build.mjs",
-    "preview": "pnpm build && pnpm dlx wrangler pages dev dist"
+    "build": "node build.mjs"
   },
   "devEngines": {
     "packageManager": {

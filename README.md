@@ -21,12 +21,6 @@ Move to a newer design system release by changing the tag in `package.json` and 
 
 ## Deploy
 
-Live at https://grocery-calculator-vincent.pages.dev/. Deploy updates with:
-
-```
-source ~/.cloudflare/deltoral.env
-pnpm build
-pnpm dlx wrangler pages deploy dist --project-name=grocery-calculator-vincent
-```
+Live at https://grocery-calculator-vincent.pages.dev/. Cloudflare Pages is connected to this repo and deploys on every push to `main` (build command `pnpm build`, output directory `dist`).
 
 (Project is named `grocery-calculator-vincent` because the plain `grocery-calculator.pages.dev` subdomain is already taken by another Cloudflare account globally.)
