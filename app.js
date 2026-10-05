@@ -130,7 +130,7 @@
         input.autocomplete = "off";
         input.className = "input actual";
         input.placeholder = row.breakeven.toFixed(2);
-        input.setAttribute("aria-label", row.item.label + " price per lb");
+        input.setAttribute("aria-label", row.item.label + " per pound price");
         if (state.actuals[row.item.id] !== undefined) input.value = state.actuals[row.item.id];
         input.addEventListener("input", function () {
           var v = parseFloat(input.value);
