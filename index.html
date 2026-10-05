@@ -26,18 +26,24 @@
     <div class="page">
       <div class="card">
         <div class="field">
-          <span class="field-label" id="category-label">Category</span>
-          <div id="category-select"></div>
+          <label class="field-label" for="category-select">Category</label>
+          <div class="native-select">
+            <select class="select-trigger" id="category-select"></select>
+            <svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </div>
         </div>
         <div class="field">
-          <span class="field-label" id="item-label">Item</span>
-          <div id="item-select"></div>
+          <label class="field-label" for="item-select">Item</label>
+          <div class="native-select">
+            <select class="select-trigger" id="item-select"></select>
+            <svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </div>
         </div>
         <div class="field">
           <label class="field-label" for="price-input">Price per lb</label>
           <div class="price-wrap">
             <span class="prefix">$</span>
-            <input class="input" id="price-input" type="text" inputmode="decimal" autocomplete="off" />
+            <input class="input" id="price-input" type="text" inputmode="decimal" autocomplete="off" placeholder="2.49" />
           </div>
         </div>
       </div>

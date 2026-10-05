@@ -2,6 +2,8 @@
 
 Mobile-first, single-page calculator for comparing grocery item prices by value per dollar (protein, calories, etc.). Pick an item, enter its price per lb, and see the break-even price for every other item in the same category.
 
+Used almost entirely in iPhone Safari, so phone ergonomics win over desktop polish. The category and item pickers are native `<select>` elements dressed in the design system's trigger style, so tapping them opens the iOS wheel picker instead of a small popup list.
+
 Static page styled with the shared design system (`@vdeltoral/design-system`, installed from GitHub at a release tag). No backend. `pnpm build` copies the page and the design system's CSS and JS into `dist/`.
 
 ## Editing items

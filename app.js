@@ -2,8 +2,8 @@
   var state = { data: null, categoryIndex: 0, itemId: null, price: null, actuals: {} };
   var DEFAULT_CATEGORY_NAME = "Chicken Cuts (Protein)";
 
-  var categoryHost = document.getElementById("category-select");
-  var itemHost = document.getElementById("item-select");
+  var categorySelect = document.getElementById("category-select");
+  var itemSelect = document.getElementById("item-select");
   var priceInput = document.getElementById("price-input");
   var resultsBody = document.getElementById("results-body");
   var resultsCard = document.getElementById("results-card");
@@ -14,14 +14,9 @@
       state.data = data;
       var defaultIndex = data.categories.findIndex(function (c) { return c.name === DEFAULT_CATEGORY_NAME; });
       state.categoryIndex = defaultIndex >= 0 ? defaultIndex : 0;
-      buildSelect(categoryHost, "category-label", data.categories.map(function (c, i) {
+      fillSelect(categorySelect, data.categories.map(function (c, i) {
         return { value: String(i), label: c.name };
-      }), String(state.categoryIndex), function (v) {
-        state.categoryIndex = parseInt(v, 10);
-        state.actuals = {};
-        populateItems();
-        render();
-      });
+      }), String(state.categoryIndex));
       populateItems();
       render();
     })
@@ -30,41 +25,15 @@
       console.error(err);
     });
 
-  function buildSelect(host, labelId, options, selected, onChange) {
-    var root = document.createElement("div");
-    root.className = "select";
-    root.dataset.value = selected;
-    var current = options.find(function (o) { return o.value === selected; });
-
-    var trigger = document.createElement("button");
-    trigger.type = "button";
-    trigger.className = "select-trigger";
-    trigger.setAttribute("aria-labelledby", labelId);
-    var value = document.createElement("span");
-    value.className = "select-value";
-    value.textContent = current.label;
-    trigger.appendChild(value);
-    trigger.insertAdjacentHTML("beforeend", '<svg class="ico ico-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>');
-
-    var list = document.createElement("ul");
-    list.className = "listbox";
-    list.setAttribute("role", "listbox");
-    list.hidden = true;
+  function fillSelect(select, options, selected) {
+    select.replaceChildren();
     options.forEach(function (o) {
-      var li = document.createElement("li");
-      li.className = "option";
-      li.setAttribute("role", "option");
-      li.setAttribute("aria-selected", String(o.value === selected));
-      li.dataset.value = o.value;
-      li.textContent = o.label;
-      list.appendChild(li);
+      var opt = document.createElement("option");
+      opt.value = o.value;
+      opt.textContent = o.label;
+      select.appendChild(opt);
     });
-
-    root.appendChild(trigger);
-    root.appendChild(list);
-    host.replaceChildren(root);
-    ds.init(host);
-    root.addEventListener("ds:change", function (e) { onChange(e.detail); });
+    select.value = selected;
   }
 
   function currentCategory() {
@@ -74,13 +43,22 @@
   function populateItems() {
     var cat = currentCategory();
     state.itemId = cat.items[0].id;
-    buildSelect(itemHost, "item-label", cat.items.map(function (it) {
+    fillSelect(itemSelect, cat.items.map(function (it) {
       return { value: it.id, label: it.label };
-    }), state.itemId, function (v) {
-      state.itemId = v;
-      render();
-    });
+    }), state.itemId);
   }
+
+  categorySelect.addEventListener("change", function () {
+    state.categoryIndex = parseInt(categorySelect.value, 10);
+    state.actuals = {};
+    populateItems();
+    render();
+  });
+
+  itemSelect.addEventListener("change", function () {
+    state.itemId = itemSelect.value;
+    render();
+  });
 
   priceInput.addEventListener("input", function () {
     var v = parseFloat(priceInput.value);
@@ -151,6 +129,7 @@
         input.inputMode = "decimal";
         input.autocomplete = "off";
         input.className = "input actual";
+        input.placeholder = row.breakeven.toFixed(2);
         input.setAttribute("aria-label", row.item.label + " price per lb");
         if (state.actuals[row.item.id] !== undefined) input.value = state.actuals[row.item.id];
         input.addEventListener("input", function () {
