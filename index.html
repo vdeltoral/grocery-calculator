@@ -1,429 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme-key="grocery-calculator-theme">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
 <title>Grocery Deal Calculator</title>
 <meta name="description" content="Find the best per-pound deal across grocery items by comparing value per dollar." />
-<meta name="theme-color" content="#0f172a" />
-<style>
-  :root {
-    color-scheme: light dark;
-    --bg: #0f172a;
-    --card: #1a2540;
-    --card-2: #212f52;
-    --border: #2c3a5e;
-    --text: #f1f5f9;
-    --text-dim: #94a3b8;
-    --accent: #4ade80;
-    --accent-2: #22c55e;
-    --highlight: #334155;
-    --danger: #f87171;
-    --radius: 14px;
-  }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  body {
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  }
-  .wrap {
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 20px 16px 48px;
-  }
-  h1 {
-    font-size: 1.35rem;
-    margin: 4px 0 2px;
-    letter-spacing: -0.01em;
-  }
-  .subtitle {
-    color: var(--text-dim);
-    font-size: 0.88rem;
-    margin: 0 0 20px;
-    line-height: 1.4;
-  }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  label {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--text-dim);
-    margin-bottom: 6px;
-  }
-  select, input[type="number"] {
-    width: 100%;
-    font-size: 1rem;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--card-2);
-    color: var(--text);
-    appearance: none;
-    -webkit-appearance: none;
-  }
-  select {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'><path fill='%2394a3b8' d='M5.5 7.5l4.5 5 4.5-5z'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 36px;
-  }
-  input[type="number"] {
-    font-variant-numeric: tabular-nums;
-  }
-  .field {
-    margin-bottom: 14px;
-  }
-  .field:last-child { margin-bottom: 0; }
-  .price-field {
-    position: relative;
-  }
-  .price-field .prefix {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-dim);
-    pointer-events: none;
-  }
-  .price-field input {
-    padding-left: 26px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.92rem;
-  }
-  thead th {
-    text-align: left;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--text-dim);
-    font-weight: 600;
-    padding: 0 8px 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  thead th:last-child, tbody td:last-child { text-align: right; }
-  tbody td {
-    padding: 12px 8px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-  }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr.anchor {
-    background: var(--highlight);
-  }
-  tbody tr.anchor td:first-child {
-    border-radius: 8px 0 0 8px;
-  }
-  tbody tr.anchor td:last-child {
-    border-radius: 0 8px 8px 0;
-  }
-  .item-label {
-    display: block;
-    font-weight: 500;
-  }
-  .item-tag {
-    display: inline-block;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: #0f172a;
-    background: var(--accent);
-    padding: 2px 6px;
-    border-radius: 5px;
-    margin-top: 4px;
-  }
-  .breakeven {
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-  }
-  .actual-input {
-    width: 84px;
-    padding: 8px 8px 8px 20px;
-    font-size: 0.92rem;
-    text-align: right;
-  }
-  .actual-wrap {
-    position: relative;
-    display: inline-block;
-  }
-  .actual-wrap .prefix {
-    position: absolute;
-    left: 7px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    pointer-events: none;
-  }
-  .verdict {
-    display: block;
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    margin-top: 4px;
-    text-align: right;
-  }
-  .verdict.good { color: var(--accent); }
-  .verdict.bad { color: var(--danger); }
-  .empty-state {
-    color: var(--text-dim);
-    font-size: 0.88rem;
-    text-align: center;
-    padding: 24px 8px;
-  }
-  .category-name {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--text-dim);
-    margin: 24px 0 8px 4px;
-  }
-  .category-name:first-of-type { margin-top: 0; }
-  footer {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.75rem;
-    margin-top: 28px;
-    line-height: 1.5;
-  }
-</style>
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f3ec" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#292c33" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap" />
+<link rel="stylesheet" href="ds/tokens.css" />
+<link rel="stylesheet" href="ds/ds-core.css" />
+<link rel="stylesheet" href="ds/ds.css" />
+<link rel="stylesheet" href="app.css" />
+<script src="ds/ds.js"></script>
 </head>
 <body>
-<div class="wrap">
-  <h1>Grocery Deal Calculator</h1>
-  <p class="subtitle">Enter the price of one item and see the break-even price for every other item, ranked by value per dollar.</p>
-
-  <div class="card">
-    <div class="field">
-      <label for="category-select">Category</label>
-      <select id="category-select"></select>
+<div class="app">
+  <header class="app-bar">
+    <span class="app-name">Grocery Deal Calculator</span>
+    <div class="app-bar-end">
+      <button type="button" class="btn btn-icon btn-subtle" data-theme-toggle aria-label="Theme"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="M8 2.5v11a5.5 5.5 0 0 0 0-11z" fill="currentColor"/></svg></button>
     </div>
-    <div class="field">
-      <label for="item-select">Item you found a price for</label>
-      <select id="item-select"></select>
+  </header>
+  <main class="app-main">
+    <div class="page">
+      <div class="card">
+        <div class="field">
+          <span class="field-label" id="category-label">Category</span>
+          <div id="category-select"></div>
+        </div>
+        <div class="field">
+          <span class="field-label" id="item-label">Item</span>
+          <div id="item-select"></div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="price-input">Price per lb</label>
+          <div class="price-wrap">
+            <span class="prefix">$</span>
+            <input class="input" id="price-input" type="text" inputmode="decimal" autocomplete="off" />
+          </div>
+        </div>
+      </div>
+      <div class="table-wrap" id="results-card" hidden>
+        <table class="table">
+          <thead>
+            <tr><th>Item</th><th class="num">Break-even</th><th class="num">Price</th></tr>
+          </thead>
+          <tbody id="results-body"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="field price-field">
-      <label for="price-input">Price per lb</label>
-      <span class="prefix">$</span>
-      <input id="price-input" type="number" inputmode="decimal" step="0.01" min="0" placeholder="2.49" />
-    </div>
-  </div>
-
-  <div class="card" id="results-card">
-    <div class="empty-state" id="empty-state">Enter a price above to compare deals.</div>
-    <table id="results-table" style="display:none">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Break-even</th>
-          <th>Actual price</th>
-        </tr>
-      </thead>
-      <tbody id="results-body"></tbody>
-    </table>
-  </div>
-
-  <footer>Break-even = the price at which an item gives the same value per dollar as your anchor item. At or below it, it's an equal or better deal.</footer>
+  </main>
 </div>
-
-<script>
-(function () {
-  var state = { data: null, categoryIndex: 0, itemId: null, price: null, actuals: {} };
-  var DEFAULT_CATEGORY_NAME = "Chicken Cuts (Protein)";
-
-  var categorySelect = document.getElementById("category-select");
-  var itemSelect = document.getElementById("item-select");
-  var priceInput = document.getElementById("price-input");
-  var resultsBody = document.getElementById("results-body");
-  var resultsTable = document.getElementById("results-table");
-  var emptyState = document.getElementById("empty-state");
-
-  fetch("conversions.json", { cache: "no-store" })
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      state.data = data;
-      var defaultIndex = data.categories.findIndex(function (c) { return c.name === DEFAULT_CATEGORY_NAME; });
-      state.categoryIndex = defaultIndex >= 0 ? defaultIndex : 0;
-      populateCategories();
-      categorySelect.value = state.categoryIndex;
-      populateItems();
-      render();
-    })
-    .catch(function (err) {
-      emptyState.textContent = "Could not load conversions.json.";
-      console.error(err);
-    });
-
-  function currentCategory() {
-    return state.data.categories[state.categoryIndex];
-  }
-
-  function populateCategories() {
-    categorySelect.innerHTML = "";
-    state.data.categories.forEach(function (cat, i) {
-      var opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = cat.name;
-      categorySelect.appendChild(opt);
-    });
-    categorySelect.addEventListener("change", function () {
-      state.categoryIndex = parseInt(categorySelect.value, 10);
-      state.itemId = null;
-      state.actuals = {};
-      populateItems();
-      render();
-    });
-  }
-
-  function populateItems() {
-    itemSelect.innerHTML = "";
-    var cat = currentCategory();
-    cat.items.forEach(function (item) {
-      var opt = document.createElement("option");
-      opt.value = item.id;
-      opt.textContent = item.label;
-      itemSelect.appendChild(opt);
-    });
-    state.itemId = cat.items[0].id;
-    itemSelect.value = state.itemId;
-    itemSelect.onchange = function () {
-      state.itemId = itemSelect.value;
-      render();
-    };
-  }
-
-  priceInput.addEventListener("input", function () {
-    var v = parseFloat(priceInput.value);
-    state.price = isNaN(v) || v <= 0 ? null : v;
-    render();
-  });
-
-  function render() {
-    if (!state.data) return;
-    var cat = currentCategory();
-    var anchor = cat.items.find(function (it) { return it.id === state.itemId; });
-
-    if (!anchor || state.price === null) {
-      resultsTable.style.display = "none";
-      emptyState.style.display = "block";
-      return;
-    }
-
-    emptyState.style.display = "none";
-    resultsTable.style.display = "table";
-    resultsBody.innerHTML = "";
-
-    var valuePerDollarAnchor = anchor.value_per_lb / state.price;
-
-    var rows = cat.items.map(function (item) {
-      var breakeven = item.value_per_lb / valuePerDollarAnchor;
-      return { item: item, breakeven: breakeven, isAnchor: item.id === anchor.id };
-    });
-
-    rows.sort(function (a, b) { return b.item.value_per_lb - a.item.value_per_lb; });
-
-    rows.forEach(function (row) {
-      var tr = document.createElement("tr");
-      if (row.isAnchor) tr.className = "anchor";
-
-      var tdItem = document.createElement("td");
-      var labelSpan = document.createElement("span");
-      labelSpan.className = "item-label";
-      labelSpan.textContent = row.item.label;
-      tdItem.appendChild(labelSpan);
-      if (row.isAnchor) {
-        var tag = document.createElement("span");
-        tag.className = "item-tag";
-        tag.textContent = "Your price";
-        tdItem.appendChild(tag);
-      }
-      tr.appendChild(tdItem);
-
-      var tdBreakeven = document.createElement("td");
-      tdBreakeven.className = "breakeven";
-      tdBreakeven.textContent = "$" + row.breakeven.toFixed(2);
-      tr.appendChild(tdBreakeven);
-
-      var tdActual = document.createElement("td");
-      if (row.isAnchor) {
-        tdActual.className = "breakeven";
-        tdActual.style.textAlign = "right";
-        tdActual.textContent = "$" + state.price.toFixed(2);
-      } else {
-        var wrap = document.createElement("div");
-        wrap.className = "actual-wrap";
-        var prefix = document.createElement("span");
-        prefix.className = "prefix";
-        prefix.textContent = "$";
-        var input = document.createElement("input");
-        input.type = "number";
-        input.inputMode = "decimal";
-        input.step = "0.01";
-        input.min = "0";
-        input.className = "actual-input";
-        input.placeholder = row.breakeven.toFixed(2);
-        if (state.actuals[row.item.id] !== undefined) {
-          input.value = state.actuals[row.item.id];
-        }
-        input.addEventListener("input", function () {
-          var v = parseFloat(input.value);
-          if (isNaN(v) || v <= 0) {
-            delete state.actuals[row.item.id];
-          } else {
-            state.actuals[row.item.id] = v;
-          }
-          updateVerdict(verdict, row, input);
-        });
-        wrap.appendChild(prefix);
-        wrap.appendChild(input);
-        tdActual.appendChild(wrap);
-
-        var verdict = document.createElement("span");
-        verdict.className = "verdict";
-        tdActual.appendChild(verdict);
-        updateVerdict(verdict, row, input);
-      }
-      tr.appendChild(tdActual);
-
-      resultsBody.appendChild(tr);
-    });
-  }
-
-  function updateVerdict(verdict, row, input) {
-    var v = parseFloat(input.value);
-    if (isNaN(v) || v <= 0) {
-      verdict.textContent = "";
-      verdict.className = "verdict";
-      return;
-    }
-    if (v <= row.breakeven) {
-      verdict.textContent = "Better deal";
-      verdict.className = "verdict good";
-    } else {
-      verdict.textContent = "Worse deal";
-      verdict.className = "verdict bad";
-    }
-  }
-})();
-</script>
+<script src="app.js"></script>
 </body>
 </html>

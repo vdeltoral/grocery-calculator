@@ -1,0 +1,22 @@
+{
+  "name": "grocery-calculator",
+  "version": "1.0.0",
+  "description": "Grocery deal calculator",
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "pnpm build && pnpm dlx wrangler pages dev dist"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.9.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.9.1",
+  "type": "module",
+  "dependencies": {
+    "@vdeltoral/design-system": "github:vdeltoral/design-system#v0.3.2"
+  },
+  "private": true
+}
